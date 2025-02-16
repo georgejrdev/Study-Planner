@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Text</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/new-text.css">
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+
+    <main id="main-new-text">
+        <section id="content">
+            <div id="menu">
+                <input onchange="handlerUpdateText()" class="form-input" type="text" name="file-name" id="file-name" value="Novo texto. Titulo aqui.">
+                <select onchange="handlerUpdateText()" class="form-input" name="subject" id="subject"></select>
+                <input onclick="changeVisibleConfirmDeleteText()" class="form-input" id="delete" type="button" value="🗑️">
+            </div>
+
+            <div id="text-content">
+                <textarea onchange="handlerUpdateText()" name="textarea-content" id="textarea-content"></textarea>
+            </div>
+        </section>
+    </main>
+
+    <div id="confirm-delete">
+        <p>Tem certeza que deseja excluir?</p>
+
+        <div id="confirm-buttons">
+            <input onclick="changeVisibleConfirmDeleteText()" id="cancel" type="button" value="CANCELAR">
+            <input onclick="handlerDeleteText()" id="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
+
+    <script src="../../js/renderData.js"></script>
+    <script src="../../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "study-planner",
+  "version": "1.0.0",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgejrdev/Study-Planner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgejrdev/Study-Planner/issues"
+  },
+  "homepage": "https://github.com/georgejrdev/Study-Planner#readme",
+  "description": "",
+  "devDependencies": {
+    "electron": "^34.1.1"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.7",
+    "sqlite3": "^5.1.7"
+  }
+}

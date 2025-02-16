@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Task</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/task.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+    <main id="main-tasks">
+        <section id="content">
+            <div id="first-column" class="columns">
+                <div id="create-task" class="form">
+                    <div class="name-container task-name">
+                        <h2>Criar tarefa</h2>
+                    </div>
+
+                    <div class="content-container" id="create-task-content">
+                        <input class="form-input" type="text" name="form-create-task-text" id="form-create-task-text" placeholder="Nome">
+                        <input class="form-input"  type="date" name="form-create-task-date" id="form-create-task-date">
+
+                        <select class="form-input" name="form-create-task-urgency" id="form-create-task-urgency">
+                            <option value="0">Urgência</option>
+                            <option value="1">Alto</option>
+                            <option value="2">Médio</option>
+                            <option value="3">Baixo</option>
+                        </select>
+
+                        <select class="form-input" name="form-create-task-impact" id="form-create-task-impact">
+                            <option value="0">Importância</option>
+                            <option value="1">Alta</option>
+                            <option value="2">Média</option>
+                            <option value="3">Baixa</option>
+                        </select>
+
+                        <input onclick="handlerCreateTask()" class="form-input-submit task-submit" type="button" value="Criar">
+                    </div>
+                </div>
+
+                <div id="task-graphic">
+                    <div class="name-container task-name">
+                        <h2>Tarefas</h2>
+                        <p>(agrupadas por prioridade)</p>
+                    </div>
+                    
+                    <div class="content-container" id="task-graphic-content">
+                        <canvas id="priority-content-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="second-column" class="columns">
+                <div id="task-list">
+                    <div class="name-container task-name">
+                        <h2>Tarefas</h2>
+                        <p>Clique para ver e editar as tarefas</p>
+                    </div>
+
+                    <div class="content-container" id="task-list-content"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/renderData.js"></script>
+</body>
+</html>

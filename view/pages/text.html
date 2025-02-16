@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Text</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/text.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+    <main id="main-texts">
+        <section id="content">
+            <div id="first-column" class="columns">
+                <button onclick="handlerCreateNewText()" id="new-text">Novo Texto</button>
+
+                <div id="text-distribution">
+                    <div class="name-container text-name">
+                        <h2>Distribuição</h2>
+                        <p>(quantidade de texto escrito por dia)</p>
+                    </div>
+
+                    <div class="content-container" id="text-distribution">
+                        <canvas id="text-distribution-canvas"></canvas>
+                    </div>
+                </div>
+
+                <div id="text-quantity">
+                    <div class="name-container text-name">
+                        <h2>Quantidade de texto</h2>
+                        <p>(agrupado por disciplina)</p>
+                    </div>
+
+                    <div class="content-container" id="text-quantity-content">
+                        <canvas id="text-subject-quantity-content-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="second-column" class="columns">
+               <div id="text-list">
+                    <div class="name-container text-name">
+                        <input onchange="handlerFindText()" type="text" name="text-list-name" id="text-list-name" placeholder="Pesquisar...">
+                    </div>
+
+                    <div class="content-container" id="text-list-content"></div>
+               </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/renderData.js"></script>
+</body>
+</html>

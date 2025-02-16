@@ -1,0 +1,175 @@
+#go-buttons {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: 300px;
+}
+
+#go-buttons > button {
+    width: 300px;
+    height: 30px;
+    text-align: left;
+    padding-left: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 0px;
+}
+
+#go-buttons > #text {
+    background-color: var(--blue);
+    color: #FFF;
+}
+
+#go-buttons > #text:hover {
+    background-color: var(--dark-blue);
+    color: #FFF;
+}
+
+#go-buttons > #grade {
+    background-color: var(--yellow);
+}
+
+#go-buttons > #grade:hover {
+    background-color: var(--dark-yellow);
+}
+
+#go-buttons > #task {
+    background-color: var(--red);
+}
+
+#go-buttons > #task:hover {
+    background-color: var(--dark-red);
+}
+
+#absences {
+    width: 300px;
+    height: 65%;
+    background-color: var(--gray);
+}
+
+#absences-name {
+    background-color: var(--green);
+}
+
+#absences-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-collapse: collapse !important;
+}
+
+.absence-day {
+    flex: 1 1 calc(100% / 7); 
+    max-width: calc(100% / 7);
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.2px solid black;
+    border-collapse: collapse !important;
+    cursor: pointer;
+    background-color: var(--dark-gray);
+}
+
+.absence-day-header {
+    height: 20px !important;
+    background-color: var(--light-gray) !important;
+    font-size: 12px !important;
+    cursor: auto !important;
+}
+
+.absence-day > p {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+}
+
+.empty-day {
+    cursor: auto !important;
+    background-color: var(--gray) !important;
+}
+
+.absence-day-checked {
+    background-color: var(--dark-red);
+}
+
+.absence-day-checked > p {
+    color: #FFF;
+}
+
+#absence-reason {
+    width: 350px;
+    height: 45%;
+    background-color: var(--gray);
+}
+
+#absence-reason-name {
+    background-color: var(--green);
+}
+
+#grade {
+    width: 350px;
+    height: 45%;
+    background-color: var(--gray);
+}
+
+#grade-name{
+    background-color: var(--yellow);
+}
+
+#tasks {
+    width: 300px;
+    height: 100%;
+    background-color: var(--gray);
+}
+
+#tasks-name {
+    background-color: var(--red);
+}
+
+#confirm-absence {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 150px;
+    background-color: var(--alt-gray);
+    border: 2px solid black;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 25px;
+}
+
+
+#absence-confirm-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#absence-confirm-buttons > input {
+    width: 100px;
+    height: 25px;
+    padding: 2px;
+    border: 2px solid black;
+}
+
+#confirm {
+    background-color: var(--dark-red);
+    color: white;
+}
+
+#cancel {
+    background-color: var(--dark-blue);
+    color: white;
+}
+
+.absence-number {
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}

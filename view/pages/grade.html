@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Grade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/grade.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+    <main id="main-grades">
+        <section id="content">
+            <div id="first-column" class="columns">
+                <div id="create-subject" class="form">
+                    <div class="name-container grade-name">
+                        <h2>Criar disciplina</h2>
+                    </div>
+
+                    <div class="content-container" id="create-subject-content">
+                        <input class="form-input" type="text" name="form-create-subject-name" id="form-create-subject-name" placeholder="Nome">
+                        <input class="form-input" type="number" name="form-create-subject-min-grade" id="form-create-subject-min-grade" placeholder="Nota mínima necessária">
+                        <input class="form-input" type="number" name="form-create-subject-max-grade" id="form-create-subject-max-grade" placeholder="Nota máxima possível">
+                        <input onclick="handlerCreateSubject()" class="form-input-submit grade-submit" type="button" value="Criar">
+                    </div>
+                </div>
+
+                <div id="register-grade" class="form">
+                    <div class="name-container grade-name">
+                        <h2>Registrar nota</h2>
+                    </div>
+
+                    <div class="content-container" id="register-grade-content">
+                        <input class="form-input" type="number" name="form-register-grade-grade" id="form-register-grade-grade" placeholder="Nota">
+                        <input class="form-input" type="text" name="form-register-grade-origin" id="form-register-grade-origin"  placeholder="Nome / Origem da nota">
+
+                        <select class="form-input" name="form-register-grade-subject" id="form-register-grade-subject"></select>
+
+                        <input onclick="handlerRegisterGrade()" class="form-input-submit grade-submit" type="button" value="Registrar">
+                    </div>
+                </div>
+            </div>
+
+            <div id="second-column" class="columns">
+               <div class="grade-graphic" id="general-grade-graphic">
+                    <div class="name-container grade-name">
+                        <h2>Notas</h2>
+                        <p>(nas 3 ultimas disciplinas)</p>
+                    </div>
+
+                    <div class="content-container" id="grade-graphic-content">
+                        <canvas id="grade-content-canvas"></canvas>
+                    </div>
+               </div>
+
+               <div class="grade-graphic" id="performance-graphic">
+                    <div class="name-container grade-name">
+                        <h2>Desempenho</h2>
+                    </div>
+
+                    <div class="content-container" id="performance-graphic-content">
+                        <canvas id="performance-content-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="third-column" class="columns">
+                <div id="grade-list">
+                    <div class="name-container grade-name">
+                        <h2>Disciplinas</h2>
+                        <p>Clique para ver e editar as notas</p>
+                    </div>
+
+                    <div class="content-container" id="grade-list-content"></div>
+                </div>    
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/renderData.js"></script>
+</body>
+</html>

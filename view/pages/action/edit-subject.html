@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Subject</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/edit-subject.css">
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+    <main id="main-edit-subject">
+        <section id="content">
+            <div id="menu">
+                <input onchange="handlerUpdateSubject()" type="text" class="form-input" name="subject-name" id="subject-name">
+                <input onclick="handlerDeleteSubject()" class="form-input" id="delete" type="button" value="🗑️">
+            </div>
+
+            <div id="grades">
+                <h2>Todas as notas da disciplina:</h2>
+
+                <div id="grade-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../../js/script.js"></script>
+    <script src="../../js/renderData.js"></script>
+</body>
+</html>

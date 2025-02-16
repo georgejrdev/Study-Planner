@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/home.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+    </header>
+    <main id="main-home">
+        <section id="content">
+            <div id="first-column" class="columns">
+                <div id="go-buttons">
+                    <button onclick="window.location.href = './pages/text.html'" id="text">Textos</button>
+                    <button onclick="window.location.href = './pages/grade.html'" id="grade">Notas e disciplinas</button>
+                    <button onclick="window.location.href = './pages/task.html'" id="task">Tarefas</button>
+                </div>
+
+                <div id="absences">
+                    <div class="name-container" id="absences-name">
+                        <h2>Faltas</h2>
+                        <p>Clique em um dia para marcar/desmarcar falta</p>
+                    </div>
+
+                    <div class="content-container" id="absences-content">
+                        <div class="absence-day absence-day-header">D</div>
+                        <div class="absence-day absence-day-header">S</div>
+                        <div class="absence-day absence-day-header">T</div>
+                        <div class="absence-day absence-day-header">Q</div>
+                        <div class="absence-day absence-day-header">Q</div>
+                        <div class="absence-day absence-day-header">S</div>
+                        <div class="absence-day absence-day-header">S</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="second-column" class="columns">
+                <div id="absence-reason">
+                    <div class="name-container" id="absence-reason-name">
+                        <h2>Motivo da falta</h2>
+                    </div>
+
+                    <div class="content-container" id="absence-reason-content">
+                        <canvas id="absence-reason-content-canvas"></canvas>
+                    </div>
+                </div>
+
+                <div id="grade">
+                    <div class="name-container" id="grade-name">
+                        <h2>Notas</h2>
+                        <p>(nas 3 ultimas disciplinas)</p>
+                    </div>
+
+                    <div class="content-container" id="grade-content">
+                        <canvas id="grade-content-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="third-column" class="columns">
+                <div id="tasks">
+                    <div class="name-container" id="tasks-name">
+                        <h2>Tarefas do dia</h2>
+                        <p>Clique para ver e editar as tarefas</p>
+                    </div>
+
+                    <div class="content-container" id="tasks-content"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="confirm-absence">
+        <select class="form-input" name="absence-reason-select" id="absence-reason-select">
+            <option value="0">Selecione o motivo</option>
+            <option value="nenhum">Nenhum</option>
+            <option value="trabalho">Trabalho</option>
+            <option value="cansaco">Cansaço</option>
+            <option value="medico">Médico</option>
+            <option value="doenca">Doença</option>
+            <option value="tarefa">Tarefa</option>
+            <option value="lazer">Lazer</option>
+        </select>
+
+        <div id="absence-confirm-buttons">
+            <input onclick="hideConfirmAbsence()" id="cancel" type="button" value="CANCELAR">
+            <input onclick="handlerRegisterAbsence()" id="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/renderData.js"></script>
+</body>
+</html>

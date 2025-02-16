@@ -1,0 +1,46 @@
+#content {
+    height: 80%;
+}
+
+.task-submit {
+    background-color: var(--dark-red);
+    color: #FFF;
+}
+
+#task-graphic-content {
+    background-color: var(--gray);
+}
+
+#task-list {
+    width: 600px;
+    height: 100%;
+    background-color: var(--gray);
+}
+
+.task-list-item-text {
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 13px;
+    min-width: 80%;
+}
+
+.task-list-item-date {
+    padding: 5px;
+    font-size: 13px;
+    background-color: var(--task-date);
+}
+
+#priority-content-canvas {
+    padding-top: 5px;
+}
+
+#task-list-content {
+    height: 550px !important;
+    overflow-y: scroll;
+}
+
+@media screen and (max-width: 800px) {
+    #task-list {
+        width: 350px;
+    }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/edit-task.css">
+</head>
+<body>
+    <header>
+        <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+        <input onclick="window.history.back()" type="button" value="<-" id="back-button">
+    </header>
+    <main id="main-edit-task">
+        <section id="content">
+            <div id="menu">
+                <input onchange="handlerUpdateTask()" type="text" class="form-input" name="task-text" id="task-text">
+                <input onclick="handlerDeleteTask()" class="form-input" id="delete" type="button" value="🗑️">
+            </div>
+
+            <div id="task-info">
+                
+                <div class="even">
+                    <label for="form-create-task-urgency">Urgência:</label>
+                    <select onchange="handlerUpdateTask()" class="form-input" name="form-create-task-urgency" id="form-create-task-urgency">
+                        <option value="0">Urgência</option>
+                        <option id="urgency-high" value="1">Alto</option>
+                        <option id="urgency-medium" value="2">Médio</option>
+                        <option id="urgency-low" value="3">Baixo</option>
+                    </select>
+                </div>
+
+                <div class="odd">
+                    <label for="form-create-task-impact">Importância:</label>
+                    <select onchange="handlerUpdateTask()" class="form-input" name="form-create-task-impact" id="form-create-task-impact">
+                        <option value="0">Importância</option>
+                        <option id="impact-high" value="1">Alta</option>
+                        <option id="impact-medium" value="2">Média</option>
+                        <option id="impact-low" value="3">Baixa</option>
+                    </select>
+                </div>
+
+                <div class="even">
+                    <label for="task-date">Data:</label>
+                    <input onchange="handlerUpdateTask()" type="date" name="task-date" id="task-date">
+                </div>
+                <div class="odd">
+                    <label for="task-completed">Concluida:</label>
+                    <input onchange="handlerUpdateTask()" type="checkbox" name="task-completed" id="task-completed">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../../js/script.js"></script>
+    <script src="../../js/renderData.js"></script>
+</body>
+</html>
