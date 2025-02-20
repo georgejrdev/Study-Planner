@@ -19,7 +19,7 @@ function showMessage(message, type) {
 
 
 // Tasks
-async function handlerCreateTask(){
+async function handleCreateTask(){
     const text = document.getElementById('form-create-task-text').value
     const date = document.getElementById('form-create-task-date').value
     const urgencyInput = Number(document.getElementById('form-create-task-urgency').value)
@@ -35,7 +35,7 @@ async function handlerCreateTask(){
     const urgency = options[urgencyInput]
     const impact = options[impactInput]
 
-    const res = await window.api.tasks.createTask(date, text, urgency, impact)
+    const res = await window.api.db.task.createTask(date, text, urgency, impact)
 
     if (res[0] === null) {
         showMessage("Tarefa criada com sucesso!", "success")
@@ -44,7 +44,7 @@ async function handlerCreateTask(){
     }
 }
 
-async function handlerShowEditTask(id, index){
+async function handleShowTask(id, index){
     if (index) {
         window.location.href = `./pages/action/edit-task.html?id=${id}`
     } else {
@@ -52,14 +52,14 @@ async function handlerShowEditTask(id, index){
     }
 }
 
-async function handlerDeleteTask(){
+async function handleDeleteTask(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
-    await window.api.tasks.removeTask(id)
+    await window.api.db.task.deleteTask(id)
     window.history.back()
 }
 
-async function handlerUpdateTask(){
+async function handleUpdateTask(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
     const text = document.getElementById("task-text").value
@@ -78,7 +78,7 @@ async function handlerUpdateTask(){
     const urgency = options[urgencyInput]
     const impact = options[impactInput]
 
-    const res = await window.api.tasks.updateTask(id, date, text, urgency, impact, completed)
+    const res = await window.api.db.task.updateTask(id, date, text, urgency, impact, completed)
 
     if (res[0] === null) {
         showMessage("Tarefa atualizada com sucesso!", "success")
@@ -89,7 +89,7 @@ async function handlerUpdateTask(){
 
 
 // Grades
-async function handlerCreateSubject(){
+async function handleCreateSubject(){
     const name = document.getElementById('form-create-subject-name').value
     const min_grade = Number(document.getElementById('form-create-subject-min-grade').value)
     const max_grade = Number(document.getElementById('form-create-subject-max-grade').value)
@@ -99,7 +99,7 @@ async function handlerCreateSubject(){
         return
     }
 
-    const res = await window.api.grades.createSubject(name, min_grade, max_grade)
+    const res = await window.api.db.subject.createSubject(name, min_grade, max_grade)
 
     if (res[0] === null) {
         showMessage("Disciplina criada com sucesso!", "success")
@@ -108,11 +108,11 @@ async function handlerCreateSubject(){
     }
 }
 
-async function handlerViewSubject(id){
+async function handleEditSubject(id){
     window.location.href = `./action/edit-subject.html?id=${id}`
 }
 
-async function handlerRegisterGrade(){
+async function handleCreateGrade(){
     const subjectId = Number(document.getElementById('form-register-grade-subject').value)
     const grade = Number(document.getElementById('form-register-grade-grade').value)
     const origin = document.getElementById('form-register-grade-origin').value
@@ -122,7 +122,7 @@ async function handlerRegisterGrade(){
         return
     }
 
-    const res = await window.api.grades.registerGrade(subjectId, grade, origin)
+    const res = await window.api.db.grade.createGrade(subjectId, grade, origin)
 
     if (res[0] === null) {
         showMessage("Nota registrada com sucesso!", "success")
@@ -131,8 +131,8 @@ async function handlerRegisterGrade(){
     }
 }
 
-async function handlerDeleteGrade(id){
-    const res = await window.api.grades.removeGrade(id)
+async function handleDeleteGrade(id){
+    const res = await window.api.db.grade.deleteGrade(id)
 
     if (res[0] === null) {
         showMessage("Nota deletada com sucesso!", "success")
@@ -141,7 +141,7 @@ async function handlerDeleteGrade(id){
     }
 }
 
-async function handlerUpdateGrade(id){
+async function handleUpdateGrade(id){
     const origin = document.getElementById(`grade-origin-${id}`).value
     const grade = Number(document.getElementById(`grade-value-${id}`).value)
 
@@ -150,7 +150,7 @@ async function handlerUpdateGrade(id){
         return
     }
 
-    const res = await window.api.grades.updateGrade(id, grade, origin)
+    const res = await window.api.db.grade.updateGrade(id, grade, origin)
 
     if (res[0] === null) {
         showMessage("Nota atualizada com sucesso!", "success")
@@ -159,7 +159,7 @@ async function handlerUpdateGrade(id){
     }
 }
 
-async function handlerUpdateSubject(){
+async function handleUpdateSubject(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
     const name = document.getElementById("subject-name").value
@@ -169,7 +169,7 @@ async function handlerUpdateSubject(){
         return
     }
 
-    const res = await window.api.grades.updateSubjectName(id, name)
+    const res = await window.api.db.subject.updateSubject(id, name)
 
     if (res[0] === null) {
         showMessage("Nome da disciplina atualizada com sucesso!", "success")
@@ -180,14 +180,14 @@ async function handlerUpdateSubject(){
 
 
 // Texts
-async function handlerViewText(id){
+async function viewText(id){
     window.location.href = `./action/new-text.html?id=${id}`
 }
 
 async function renderAllTexts(){
     const textListDiv = document.getElementById("text-list-content")
 
-    const res = await window.api.global.findQuery("SELECT texts.id, texts.title, texts.text, texts.date, subjects.name AS subject_name FROM texts LEFT JOIN subjects ON texts.subjects_id = subjects.id")
+    const res = await window.api.db.global.findQuery("SELECT texts.id, texts.title, texts.text, texts.date, subjects.name AS subject_name FROM texts LEFT JOIN subjects ON texts.subjects_id = subjects.id")
 
     if (res[0] === null) {
         const texts = res[1]
@@ -197,7 +197,7 @@ async function renderAllTexts(){
             const textDiv = document.createElement("div")
             textDiv.classList.add("item")
             textDiv.classList.add("text-list-item")
-            textDiv.setAttribute("onclick", `handlerViewText(${text.id})`)
+            textDiv.setAttribute("onclick", `viewText(${text.id})`)
 
             if (number == 0) {
                 textDiv.classList.add("even")
@@ -213,7 +213,7 @@ async function renderAllTexts(){
 
             const textDate = document.createElement("p")
             textDate.classList.add("text-list-item-date")
-            textDate.innerText = formatarDataBR(text.date)
+            textDate.innerText = formatDateToBR(text.date)
 
             const textSubject = document.createElement("p")
             textSubject.classList.add("text-list-item-subject")
@@ -235,12 +235,12 @@ function clearTextList(){
     }
 }
 
-function formatarDataBR(dataSQLite) {
+function formatDateToBR(dataSQLite) {
     const [year, month, day] = dataSQLite.split("-")
     return `${day}/${month}/${year}`
 }
 
-async function handlerFindText(){
+async function handleSearchText(){
     const search = document.getElementById("text-list-name").value
 
     if (search == "" || search == null) {
@@ -249,7 +249,7 @@ async function handlerFindText(){
         return
     }
 
-    const res = await window.api.texts.fullTextSearch(search)
+    const res = await window.api.db.text.search(search)
 
     if (res[0] === null) {
         clearTextList()
@@ -261,7 +261,7 @@ async function handlerFindText(){
             const textDiv = document.createElement("div")
             textDiv.classList.add("item")
             textDiv.classList.add("text-list-item")
-            textDiv.setAttribute("onclick", `handlerViewText(${text.id})`)
+            textDiv.setAttribute("onclick", `viewText(${text.id})`)
 
             if (number == 0) {
                 textDiv.classList.add("even")
@@ -277,7 +277,7 @@ async function handlerFindText(){
 
             const textDate = document.createElement("p")
             textDate.classList.add("text-list-item-date")
-            textDate.innerText = formatarDataBR(text.date)
+            textDate.innerText = formatDateToBR(text.date)
 
             const textSubject = document.createElement("p")
             textSubject.classList.add("text-list-item-subject")
@@ -291,17 +291,17 @@ async function handlerFindText(){
     }
 }
 
-async function handlerCreateNewText(){
+async function handleCreateText(){
 
     const defaultSubject = null
     const defaultTitle = "Untitled"
     const defaultContent = ""
     const date = new Date().toISOString().slice(0, 10)
 
-    const res = await window.api.texts.createText(defaultSubject, defaultTitle, defaultContent, date)
+    const res = await window.api.db.text.createText(defaultSubject, defaultTitle, defaultContent, date)
 
     if (res[0] === null) {
-        let lastId = await window.api.global.findQuery("SELECT id FROM texts ORDER BY id DESC LIMIT 1")
+        let lastId = await window.api.db.global.findQuery("SELECT id FROM texts ORDER BY id DESC LIMIT 1")
         lastId = lastId[1][0].id
         window.location.href = `./action/new-text.html?id=${lastId}`
     } else {
@@ -309,19 +309,19 @@ async function handlerCreateNewText(){
     }
 }
 
-async function handlerUpdateText(){
+async function handleUpdateText(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
     const title = document.getElementById("file-name").value
     const content = document.getElementById("textarea-content").value
     const subjectId = (Number(document.getElementById("subject").value) === -1 ) ? null : Number(document.getElementById("subject").value)
-    await window.api.texts.updateText(id, subjectId, title, content)
+    await window.api.db.text.updateText(id, subjectId, title, content)
 }
 
-async function handlerDeleteText(){
+async function handleDeleteText(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
-    await window.api.texts.removeText(id)
+    await window.api.db.text.deleteText(id)
     window.history.back()
 }
 
@@ -335,9 +335,9 @@ function changeVisibleConfirmDeleteText(){
 // Absences
 let absenceDate = ""
 
-async function handlerShowAbsenceMenu(create, date){
+async function handleAbsence(create, date){
     if (!create){
-        const res = await window.api.absences.removeAbsence(date)
+        const res = await window.api.db.absence.deleteAbsence(date)
         
         if (res[0] === null) {
             showMessage("Falta removida com sucesso!", "success")
@@ -355,7 +355,7 @@ function hideConfirmAbsence(){
     document.getElementById("confirm-absence").style.display = "none"
 }
 
-async function handlerRegisterAbsence(){
+async function handleCreateAbsence(){
     const date = absenceDate
     const reason = document.getElementById("absence-reason-select").value
 
@@ -364,7 +364,7 @@ async function handlerRegisterAbsence(){
         return
     }
 
-    const res = await window.api.absences.registerAbsence(date, reason)
+    const res = await window.api.db.absence.createAbsence(date, reason)
 
     if (res[0] === null) {
         showMessage("Falta registrada com sucesso!", "success")
@@ -375,9 +375,9 @@ async function handlerRegisterAbsence(){
     }
 }
 
-async function handlerDeleteSubject(){
+async function handleDeleteSubject(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
-    await window.api.grades.removeSubject(id)
+    await window.api.db.subject.deleteSubject(id)
     window.history.back()
 }

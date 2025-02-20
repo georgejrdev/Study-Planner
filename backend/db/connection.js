@@ -49,8 +49,6 @@ db.serialize(() => {
         impact TEXT NOT NULL,
         checked BOOLEAN NOT NULL
     )`);
-    
-    console.log("Database connected!");
 });
 
-module.exports = db;
+module.exports = db

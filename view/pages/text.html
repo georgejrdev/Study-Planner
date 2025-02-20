@@ -24,7 +24,7 @@
     <main id="main-texts">
         <section id="content">
             <div id="first-column" class="columns">
-                <button onclick="handlerCreateNewText()" id="new-text">Novo Texto</button>
+                <button onclick="handleCreateText()" id="new-text">Novo Texto</button>
 
                 <div id="text-distribution">
                     <div class="name-container text-name">
@@ -52,7 +52,7 @@
             <div id="second-column" class="columns">
                <div id="text-list">
                     <div class="name-container text-name">
-                        <input onchange="handlerFindText()" type="text" name="text-list-name" id="text-list-name" placeholder="Pesquisar...">
+                        <input onchange="handleSearchText()" type="text" name="text-list-name" id="text-list-name" placeholder="Pesquisar...">
                     </div>
 
                     <div class="content-container" id="text-list-content"></div>

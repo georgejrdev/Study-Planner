@@ -1,8 +1,8 @@
 const db = require('./connection') 
 
-function createGrade(subjectId, grade, origin) {
-    let query = "INSERT INTO grades (subjects_id, grade, origin) VALUES (?, ?, ?)"
-    const values = [subjectId, grade, origin]
+function createSubject(name, minGrade, maxGrade) {
+    let query = "INSERT INTO subjects (name, min_grade, max_grade) VALUES (?, ?, ?)"
+    const values = [name, minGrade, maxGrade]
 
     db.run(query, values, function(err) {
         if (err) {
@@ -13,9 +13,9 @@ function createGrade(subjectId, grade, origin) {
     return [null, true]
 }
 
-function updateGrade(id, grade, origin) {
-    let query = "UPDATE grades SET grade = ?, origin = ? WHERE id = ?"
-    const values = [grade, origin, id]
+function updateSubject(id, name) {
+    let query = "UPDATE subjects SET name = ? WHERE id = ?"
+    const values = [name, id]
 
     db.run(query, values, function(err) {
         if (err) {
@@ -26,8 +26,8 @@ function updateGrade(id, grade, origin) {
     return [null, true]
 }
 
-function deleteGrade(id) {
-    let query = "DELETE FROM grades WHERE id = ?"
+function deleteSubject(id) {
+    let query = "DELETE FROM subjects WHERE id = ?"
     const values = [id]
 
     db.run(query, values, function(err) {
@@ -40,7 +40,7 @@ function deleteGrade(id) {
 }
 
 module.exports = {
-    createGrade,
-    updateGrade,
-    deleteGrade
+    createSubject, 
+    updateSubject, 
+    deleteSubject
 }

@@ -1,12 +1,12 @@
-const VERSION = "1.0.0";
-const DATABASE_NAME = "studyplanner";
+const VERSION = "1.0.0"
+const DATABASE_NAME = "studyplanner"
 
 function getVersion() {
-    return VERSION;
+    return VERSION
 }
 
 function getDatabaseName() {
-    return DATABASE_NAME;
+    return DATABASE_NAME
 }
 
 module.exports = {

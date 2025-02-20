@@ -1,5 +1,5 @@
 if (document.getElementById("version-number") != null){
-    handlerGetVersion()
+    handleGetVersion()
 }
 
 if (document.getElementById("main-tasks") != null) {
@@ -34,16 +34,16 @@ if (document.getElementById("main-edit-subject") != null) {
     renderEditSubject()
 }
 
-function formatarDataBR(dataSQLite) {
-    const [year, month, day] = dataSQLite.split("-");
-    return `${day}/${month}/${year}`;
-}
-
 if (document.getElementById("main-edit-task") != null) {
     renderEditTask()
 }
 
-async function handlerGetVersion(){
+function formateDateToBR(dataSQLite) {
+    const [year, month, day] = dataSQLite.split("-")
+    return `${day}/${month}/${year}`
+}
+
+async function handleGetVersion(){
     const version = await window.api.program.getVersion()
     document.getElementById("version-number").innerText = `v${version}`
 }
@@ -51,7 +51,7 @@ async function handlerGetVersion(){
 async function renderTasks(){
     const taskListDiv = document.getElementById("task-list-content")
 
-    const res = await window.api.global.findAll("tasks")
+    const res = await window.api.db.global.findAll("tasks")
 
     if (res[0] === null) {
         const tasks = res[1]
@@ -62,7 +62,7 @@ async function renderTasks(){
             const taskDiv = document.createElement("div")
             taskDiv.classList.add("item")
             taskDiv.classList.add("task-list-item")
-            taskDiv.setAttribute("onclick", `handlerShowEditTask(${task.id}, ${false})`)
+            taskDiv.setAttribute("onclick", `handleShowTask(${task.id}, ${false})`)
 
             if (number == 0) {
                 taskDiv.classList.add("even")
@@ -78,7 +78,7 @@ async function renderTasks(){
 
             const taskDate = document.createElement("p")
             taskDate.classList.add("task-list-item-date")
-            taskDate.innerText = formatarDataBR(task.date)
+            taskDate.innerText = formateDateToBR(task.date)
 
             if (task.checked) {
                 taskText.classList.add("checked-task")
@@ -96,7 +96,7 @@ async function renderTasks(){
 async function renderSubjects(){
     const gradeListDiv = document.getElementById("grade-list-content")
     
-    const resSubjects = await window.api.global.findQuery("SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name ORDER BY s.id")
+    const resSubjects = await window.api.db.global.findQuery("SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name ORDER BY s.id")
     if (resSubjects[0] === null) {
         const subjects = resSubjects[1]
         let number = 0
@@ -105,7 +105,7 @@ async function renderSubjects(){
             const subjectDiv = document.createElement("div")
             subjectDiv.classList.add("item")
             subjectDiv.classList.add("grade-list-item")
-            subjectDiv.setAttribute("onclick", `handlerViewSubject(${subject.id})`)    
+            subjectDiv.setAttribute("onclick", `handleEditSubject(${subject.id})`)    
 
             if (number == 0) {
                 subjectDiv.classList.add("even")
@@ -148,14 +148,14 @@ async function renderSubjects(){
 
 async function renderDailyTasks(){
 
-    const currentDate = new Date();
+    const currentDate = new Date()
     const formatedCurrentDate = currentDate.toLocaleDateString('sv-SE', {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    });
+    })
 
     const dailyTasksDiv = document.getElementById("tasks-content")
 
-    const res = await window.api.global.findBy("tasks", `date = '${formatedCurrentDate}'`)
+    const res = await window.api.db.global.findBy("tasks", `date = '${formatedCurrentDate}'`)
 
     if (res[0] === null) {
         const tasks = res[1]
@@ -166,7 +166,7 @@ async function renderDailyTasks(){
             const taskDiv = document.createElement("div")
             taskDiv.classList.add("item")
             taskDiv.classList.add("task-list-item")
-            taskDiv.setAttribute("onclick", `handlerShowEditTask(${task.id}, ${true})`)
+            taskDiv.setAttribute("onclick", `handleShowTask(${task.id}, ${true})`)
 
             if (number == 0) {
                 taskDiv.classList.add("even")
@@ -182,7 +182,7 @@ async function renderDailyTasks(){
 
             const taskDate = document.createElement("p")
             taskDate.classList.add("task-list-item-date")
-            taskDate.innerText = formatarDataBR(task.date)
+            taskDate.innerText = formateDateToBR(task.date)
 
             if (task.checked) {
                 taskText.classList.add("checked-task")
@@ -200,7 +200,7 @@ async function renderDailyTasks(){
 async function renderAllTexts(){
     const textListDiv = document.getElementById("text-list-content")
 
-    const res = await window.api.global.findQuery("SELECT texts.id, texts.title, texts.text, texts.date, subjects.name AS subject_name FROM texts LEFT JOIN subjects ON texts.subjects_id = subjects.id;")
+    const res = await window.api.db.global.findQuery("SELECT texts.id, texts.title, texts.text, texts.date, subjects.name AS subject_name FROM texts LEFT JOIN subjects ON texts.subjects_id = subjects.id")
 
     if (res[0] === null) {
         const texts = res[1]
@@ -210,7 +210,7 @@ async function renderAllTexts(){
             const textDiv = document.createElement("div")
             textDiv.classList.add("item")
             textDiv.classList.add("text-list-item")
-            textDiv.setAttribute("onclick", `handlerViewText(${text.id})`)
+            textDiv.setAttribute("onclick", `viewText(${text.id})`)
 
             if (number == 0) {
                 textDiv.classList.add("even")
@@ -226,7 +226,7 @@ async function renderAllTexts(){
 
             const textDate = document.createElement("p")
             textDate.classList.add("text-list-item-date")
-            textDate.innerText = formatarDataBR(text.date)
+            textDate.innerText = formateDateToBR(text.date)
 
             const textSubject = document.createElement("p")
             textSubject.classList.add("text-list-item-subject")
@@ -241,10 +241,10 @@ async function renderAllTexts(){
 }
 
 async function renderText(){
-    const parameters = new URLSearchParams(window.location.search);
-    const id = parameters.get("id");
+    const parameters = new URLSearchParams(window.location.search)
+    const id = parameters.get("id")
 
-    const res = await window.api.global.findBy("texts", `id = ${id}`)
+    const res = await window.api.db.global.findBy("texts", `id = ${id}`)
 
     if (res[0] === null) {
         const text = res[1][0]
@@ -252,7 +252,7 @@ async function renderText(){
         document.getElementById("textarea-content").value = text.text
         const subjectId = (text.subjects_id == null) ? -1 : text.subjects_id
         
-        const resSubjects = await window.api.global.findAll("subjects")
+        const resSubjects = await window.api.db.global.findAll("subjects")
 
         if (resSubjects[0] === null) {
             const subjects = resSubjects[1]
@@ -279,17 +279,17 @@ async function renderText(){
 }
 
 function getCurrentMonthDays() {
-    let days = [];
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = now.getMonth() + 1;
+    let days = []
+    let now = new Date()
+    let year = now.getFullYear()
+    let month = now.getMonth() + 1
 
     let totalDays = new Date(year, month, 0).getDate()
 
     for (let day = 1; day <= totalDays; day++) {
-        let date = new Date(year, month - 1, day);
-        let formattedDate = date.toISOString().split("T")[0]; 
-        days.push(formattedDate);
+        let date = new Date(year, month - 1, day)
+        let formattedDate = date.toISOString().split("T")[0] 
+        days.push(formattedDate)
     }
 
     let initDay = new Date(year, month - 1, 1).getDay()
@@ -300,7 +300,7 @@ function getCurrentMonthDays() {
 async function renderAbsences(){
     const absencesDiv = document.getElementById("absences-content")
 
-    const res = await window.api.global.findAll("absences")
+    const res = await window.api.db.global.findAll("absences")
 
     if (res[0] === null) {
         const absences = res[1]
@@ -335,7 +335,7 @@ async function renderAbsences(){
                 }
             } 
 
-            dayDiv.setAttribute("onclick", `handlerShowAbsenceMenu(${create},'${day}')`)
+            dayDiv.setAttribute("onclick", `handleAbsence(${create},'${day}')`)
             dayDiv.appendChild(dayText)
 
             absencesDiv.appendChild(dayDiv)
@@ -349,15 +349,15 @@ async function renderAbsences(){
 }
 
 async function renderAbsenceReasonPieChart(){
-    const absenceReasonCanvas = document.getElementById("absence-reason-content-canvas");
+    const absenceReasonCanvas = document.getElementById("absence-reason-content-canvas")
 
-    const res = await window.api.global.findQuery("SELECT reason, COUNT(*) AS quantity FROM absences GROUP BY reason;");
+    const res = await window.api.db.global.findQuery("SELECT reason, COUNT(*) AS quantity FROM absences GROUP BY reason")
 
     if (res[0] === null) {
-        const reasons = res[1];
+        const reasons = res[1]
 
-        const labels = reasons.map(item => item.reason); 
-        const data = reasons.map(item => item.quantity);  
+        const labels = reasons.map(item => item.reason) 
+        const data = reasons.map(item => item.quantity)  
 
         new Chart(absenceReasonCanvas, {
             type: 'pie',
@@ -376,8 +376,8 @@ async function renderAbsenceReasonPieChart(){
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                const percentage = tooltipItem.raw / data.reduce((a, b) => a + b, 0) * 100;
-                                return `${tooltipItem.label}: ${tooltipItem.raw} ausências (${percentage.toFixed(2)}%)`;
+                                const percentage = tooltipItem.raw / data.reduce((a, b) => a + b, 0) * 100
+                                return `${tooltipItem.label}: ${tooltipItem.raw} ausências (${percentage.toFixed(2)}%)`
                             }
                         }
                     },
@@ -392,32 +392,32 @@ async function renderAbsenceReasonPieChart(){
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderGradeChart(){
-    const gradeCanvas = document.getElementById("grade-content-canvas");
+    const gradeCanvas = document.getElementById("grade-content-canvas")
 
-    const res = await window.api.global.findQuery("SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name ORDER BY s.id DESC LIMIT 3;");
+    const res = await window.api.db.global.findQuery("SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name ORDER BY s.id DESC LIMIT 3")
 
     if (res[0] === null) {
-        const grades = res[1];
+        const grades = res[1]
 
-        const labels = grades.map(item => item.name); 
-        const totalGrades = grades.map(item => item.total_grades);  
-        const minGrades = grades.map(item => item.min_grade);
-        const maxGrades = grades.map(item => item.max_grade);
+        const labels = grades.map(item => item.name) 
+        const totalGrades = grades.map(item => item.total_grades)  
+        const minGrades = grades.map(item => item.min_grade)
+        const maxGrades = grades.map(item => item.max_grade)
 
         const barColors = grades.map(item => {
             if (item.total_grades >= item.max_grade) {
-                return '#4CAF50'; 
+                return '#4CAF50' 
             } else if (item.total_grades < item.min_grade) {
-                return '#f44336';
+                return '#f44336'
             } else {
-                return '#2196F3';
+                return '#2196F3'
             }
-        });
+        })
 
         new Chart(gradeCanvas, {
             type: 'bar', 
@@ -448,8 +448,8 @@ async function renderGradeChart(){
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                const percentage = tooltipItem.raw / maxGrades[tooltipItem.dataIndex] * 100;
-                                return `${tooltipItem.label}: ${tooltipItem.raw} (${percentage.toFixed(2)}%)`;
+                                const percentage = tooltipItem.raw / maxGrades[tooltipItem.dataIndex] * 100
+                                return `${tooltipItem.label}: ${tooltipItem.raw} (${percentage.toFixed(2)}%)`
                             }
                         }
                     },
@@ -458,30 +458,30 @@ async function renderGradeChart(){
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderPerformancePieChart() {
-    const performanceCanvas = document.getElementById("performance-content-canvas");
+    const performanceCanvas = document.getElementById("performance-content-canvas")
 
-    const res = await window.api.global.findQuery(` SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name `);
+    const res = await window.api.db.global.findQuery(` SELECT s.id, s.name, COALESCE(SUM(g.grade), 0) AS total_grades, s.min_grade AS min_grade, s.max_grade AS max_grade FROM subjects s LEFT JOIN grades g ON s.id = g.subjects_id GROUP BY s.id, s.name `)
 
     if (res[0] === null) {
-        const grades = res[1];
-        let belowMin = 0;
-        let atMin = 0;
-        let atMax = 0;
+        const grades = res[1]
+        let belowMin = 0
+        let atMin = 0
+        let atMax = 0
 
         grades.forEach(item => {
             if (item.total_grades < item.min_grade) {
-                belowMin++;
+                belowMin++
             } else if (item.total_grades >= item.max_grade) {
-                atMax++;
+                atMax++
             } else {
-                atMin++;
+                atMin++
             }
-        });
+        })
 
         const performanceData = {
             labels: [
@@ -494,7 +494,7 @@ async function renderPerformancePieChart() {
                 backgroundColor: ["#f07b8b", "#f5a1c1", "#f5a36d"],
                 hoverBackgroundColor: ["#f07b8b", "#f5a1c1", "#f5a36d"],
             }]
-        };
+        }
 
         new Chart(performanceCanvas, {
             type: 'pie',
@@ -505,9 +505,9 @@ async function renderPerformancePieChart() {
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                const totalSubjects = grades.length;
-                                const percentage = (tooltipItem.raw / totalSubjects) * 100;
-                                return `${tooltipItem.label} (${percentage.toFixed(2)}%)`;
+                                const totalSubjects = grades.length
+                                const percentage = (tooltipItem.raw / totalSubjects) * 100
+                                return `${tooltipItem.label} (${percentage.toFixed(2)}%)`
                             }
                         }
                     },
@@ -519,21 +519,21 @@ async function renderPerformancePieChart() {
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderPriorityPieChart() {
-    const priorityCanvas = document.getElementById("priority-content-canvas");
+    const priorityCanvas = document.getElementById("priority-content-canvas")
 
-    const res = await window.api.global.findQuery("SELECT priority_level, COUNT(*) AS task_count FROM tasks WHERE checked = 0 GROUP BY priority_level;");
+    const res = await window.api.db.global.findQuery("SELECT priority_level, COUNT(*) AS task_count FROM tasks WHERE checked = 0 GROUP BY priority_level")
 
     if (res[0] === null) {
-        const taskCounts = res[1];
+        const taskCounts = res[1]
 
-        const labels = taskCounts.map(item => `Prioridade ${item.priority_level}`); 
-        const data = taskCounts.map(item => item.task_count);  
-        const colors = ["#f07b8b", "#f5a1c1", "#f5a36d", "#6da9e1", "#f7e24e", "#c78ee3", "#f5a79f", "#b1e7a1"];
+        const labels = taskCounts.map(item => `Prioridade ${item.priority_level}`) 
+        const data = taskCounts.map(item => item.task_count)  
+        const colors = ["#f07b8b", "#f5a1c1", "#f5a36d", "#6da9e1", "#f7e24e", "#c78ee3", "#f5a79f", "#b1e7a1"]
 
         new Chart(priorityCanvas, {
             type: 'pie',
@@ -552,9 +552,9 @@ async function renderPriorityPieChart() {
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                const totalTasks = data.reduce((a, b) => a + b, 0);
-                                const percentage = tooltipItem.raw / totalTasks * 100;
-                                return `${tooltipItem.label}: ${tooltipItem.raw} tarefas (${percentage.toFixed(2)}%)`;
+                                const totalTasks = data.reduce((a, b) => a + b, 0)
+                                const percentage = tooltipItem.raw / totalTasks * 100
+                                return `${tooltipItem.label}: ${tooltipItem.raw} tarefas (${percentage.toFixed(2)}%)`
                             }
                         }
                     },
@@ -566,27 +566,27 @@ async function renderPriorityPieChart() {
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderTextSubjectPieChart() {
-    const textSubjectQuantityCanvas = document.getElementById("text-subject-quantity-content-canvas");
+    const textSubjectQuantityCanvas = document.getElementById("text-subject-quantity-content-canvas")
 
-    const res = await window.api.global.findQuery(` SELECT COALESCE(s.name, 'Nenhuma') AS subject_name, COUNT(t.id) AS text_count FROM texts t LEFT JOIN subjects s ON t.subjects_id = s.id GROUP BY subject_name; `);
+    const res = await window.api.db.global.findQuery(` SELECT COALESCE(s.name, 'Nenhuma') AS subject_name, COUNT(t.id) AS text_count FROM texts t LEFT JOIN subjects s ON t.subjects_id = s.id GROUP BY subject_name `)
 
     if (res[0] === null) {
-        const subjectCounts = res[1];
+        const subjectCounts = res[1]
 
-        const labels = subjectCounts.map(item => item.subject_name);
-        const data = subjectCounts.map(item => item.text_count);
+        const labels = subjectCounts.map(item => item.subject_name)
+        const data = subjectCounts.map(item => item.text_count)
         
         const colors = [
             "#f07b8b", "#f5a1c1", "#f5a36d", "#6da9e1", "#f7e24e", "#c78ee3", "#f5a79f", "#b1e7a1", 
             "#fc77f7", "#f8f7f9", "#d6bbf2", "#ff6e6e", "#9e5ff7", "#fe875f", "#7d5a5f", "#9f8773", 
             "#f7c553", "#f593b3", "#f59d65", "#72b1b5", "#c5e6f4", "#7cd8c5", "#ff99bb", "#80cbff", 
             "#f9a7c4", "#6b6db3", "#ff4e6a", "#7dffae", "#dbfae4", "#ffdd9e"
-        ];
+        ]
 
         new Chart(textSubjectQuantityCanvas, {
             type: 'pie',
@@ -605,9 +605,9 @@ async function renderTextSubjectPieChart() {
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                const totalTexts = data.reduce((a, b) => a + b, 0);
-                                const percentage = tooltipItem.raw / totalTexts * 100;
-                                return `${tooltipItem.label}: ${tooltipItem.raw} textos (${percentage.toFixed(2)}%)`;
+                                const totalTexts = data.reduce((a, b) => a + b, 0)
+                                const percentage = tooltipItem.raw / totalTexts * 100
+                                return `${tooltipItem.label}: ${tooltipItem.raw} textos (${percentage.toFixed(2)}%)`
                             }
                         }
                     },
@@ -622,20 +622,20 @@ async function renderTextSubjectPieChart() {
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderTextDistributionOverTime() {
-    const textDistributionCanvas = document.getElementById("text-distribution-canvas");
+    const textDistributionCanvas = document.getElementById("text-distribution-canvas")
 
-    const res = await window.api.global.findQuery("SELECT date, COUNT(id) AS text_count FROM texts GROUP BY date ORDER BY date;");
+    const res = await window.api.db.global.findQuery("SELECT date, COUNT(id) AS text_count FROM texts GROUP BY date ORDER BY date")
 
     if (res[0] === null) {
-        const data = res[1];
+        const data = res[1]
 
-        const labels = data.map(item => item.date); 
-        const textCounts = data.map(item => item.text_count); 
+        const labels = data.map(item => item.date) 
+        const textCounts = data.map(item => item.text_count) 
 
         new Chart(textDistributionCanvas, {
             type: 'line',
@@ -683,7 +683,7 @@ async function renderTextDistributionOverTime() {
                     tooltip: {
                         callbacks: {
                             label: function(tooltipItem) {
-                                return `Textos: ${tooltipItem.raw}`;
+                                return `Textos: ${tooltipItem.raw}`
                             }
                         }
                     },
@@ -692,15 +692,15 @@ async function renderTextDistributionOverTime() {
                     }
                 }
             }
-        });
+        })
     }
 }
 
 async function renderEditSubject(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
-    const resSubject = await window.api.global.findBy("subjects", `id = ${id}`)
-    const resGrades = await window.api.global.findBy("grades", `subjects_id = ${id}`)
+    const resSubject = await window.api.db.global.findBy("subjects", `id = ${id}`)
+    const resGrades = await window.api.db.global.findBy("grades", `subjects_id = ${id}`)
 
     if ((resSubject[0] === null) && (resGrades[0] === null)) {
         const subject = resSubject[1][0]
@@ -742,19 +742,18 @@ async function renderEditSubject(){
             gradeUpdate.classList.add("grade-list-item-update")
             gradeUpdate.type = "button"
             gradeUpdate.value = "✔️"
-            gradeUpdate.setAttribute("onclick", `handlerUpdateGrade(${grade.id})`)
+            gradeUpdate.setAttribute("onclick", `handleUpdateGrade(${grade.id})`)
 
             const gradeDelete = document.createElement("input")
             gradeDelete.classList.add("grade-list-item-delete")
             gradeDelete.type = "button"
             gradeDelete.value = "🗑️"
-            gradeDelete.setAttribute("onclick", `handlerDeleteGrade(${grade.id})`)
+            gradeDelete.setAttribute("onclick", `handleDeleteGrade(${grade.id})`)
 
             gradeDiv.appendChild(gradeValue)
             gradeDiv.appendChild(gradeOrigin)
             gradeDiv.appendChild(gradeUpdate)
             gradeDiv.appendChild(gradeDelete)
-
             gradeContent.appendChild(gradeDiv)
         })
     }
@@ -764,7 +763,7 @@ async function renderEditTask(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
 
-    const resTask = await window.api.global.findBy("tasks", `id = ${id}`)
+    const resTask = await window.api.db.global.findBy("tasks", `id = ${id}`)
 
     if (resTask[0] === null) {
         const task = resTask[1][0]
