@@ -7,7 +7,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . Study-Planner --platform=win32 --arch=x64 --out=dist/ --overwrite"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,8 @@
   "homepage": "https://github.com/georgejrdev/Study-Planner#readme",
   "description": "",
   "devDependencies": {
-    "electron": "^34.1.1"
+    "electron": "^34.1.1",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
     "chart.js": "^4.4.7",

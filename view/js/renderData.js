@@ -1,3 +1,7 @@
+if (document.getElementById("version-number") != null){
+    handlerGetVersion()
+}
+
 if (document.getElementById("main-tasks") != null) {
     renderTasks()
     renderPriorityPieChart()
@@ -37,6 +41,11 @@ function formatarDataBR(dataSQLite) {
 
 if (document.getElementById("main-edit-task") != null) {
     renderEditTask()
+}
+
+async function handlerGetVersion(){
+    const version = await window.api.program.getVersion()
+    document.getElementById("version-number").innerText = `v${version}`
 }
 
 async function renderTasks(){

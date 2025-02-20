@@ -1,9 +1,11 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-const { app } = require('electron');
+const sqlite3 = require("sqlite3").verbose()
+const path = require("path")
+const { app } = require("electron")
+const { getDatabaseName } = require("../defaultValues")
 
-const dbPath = path.join(app.getPath('userData'), 'studyplanner.db');
-const db = new sqlite3.Database(dbPath);
+const dbName = getDatabaseName()
+const dbPath = path.join(app.getPath('userData'), `${dbName}.db`)
+const db = new sqlite3.Database(dbPath)
 
 db.serialize(() => {
     db.run("PRAGMA foreign_keys = ON;");

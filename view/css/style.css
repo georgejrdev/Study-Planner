@@ -74,6 +74,8 @@ header {
     height: 8vh;
     background-color: black;
     display: flex;
+    flex-direction: column;
+    gap: 5px;
     align-items: center;
     justify-content: center;
 }
@@ -81,6 +83,11 @@ header {
 header > p, header > p > a {
     color: #FFF;
     font-weight: bold;
+}
+
+header > #version-number {
+    font-size: 12px;
+    font-weight: normal;
 }
 
 #back-button {

@@ -1,6 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
+    program: {
+        getVersion: () => ipcRenderer.invoke('get-version'),
+    },
     global: {
         findAll: (table) => ipcRenderer.invoke('find-all', table),
         findBy: (table, condition) => ipcRenderer.invoke('find-by', table, condition),
