@@ -26,10 +26,6 @@ if (document.getElementById("main-texts") != null) {
     renderTextDistributionOverTime()
 }
 
-if (document.getElementById("main-new-text") != null) {
-    renderText()
-}
-
 if (document.getElementById("main-edit-subject") != null) {
     renderEditSubject()
 }
@@ -237,44 +233,6 @@ async function renderAllTexts(){
             textDiv.appendChild(textSubject)
             textListDiv.appendChild(textDiv)
         })
-    }
-}
-
-async function renderText(){
-    const parameters = new URLSearchParams(window.location.search)
-    const id = parameters.get("id")
-
-    const res = await window.api.db.global.findBy("texts", `id = ${id}`)
-
-    if (res[0] === null) {
-        const text = res[1][0]
-        document.getElementById("file-name").value = text.title
-        document.getElementById("textarea-content").value = text.text
-        const subjectId = (text.subjects_id == null) ? -1 : text.subjects_id
-        
-        const resSubjects = await window.api.db.global.findAll("subjects")
-
-        if (resSubjects[0] === null) {
-            const subjects = resSubjects[1]
-            const selectSubjects = document.getElementById("subject")
-
-            const defaultOption = document.createElement("option")
-            defaultOption.value = -1
-            defaultOption.innerText = "Disciplina"
-            selectSubjects.appendChild(defaultOption)
-
-            subjects.forEach(subject => {
-                const option = document.createElement("option")
-                option.value = subject.id
-                option.innerText = subject.name
-
-                if (subject.id == subjectId) {
-                    option.selected = true
-                }
-
-                selectSubjects.appendChild(option)
-            })
-        }
     }
 }
 

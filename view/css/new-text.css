@@ -39,16 +39,6 @@
     padding: 0px !important;
 }
 
-#textarea-content {
-    margin-top: 50px;
-    resize: none !important;
-    width: 100% !important;
-    min-height: 70vh !important;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 0px;
-}
-
 #confirm-delete {
     position: absolute;
     top: 50%;
@@ -86,6 +76,20 @@
 #cancel {
     background-color: var(--dark-blue);
     color: white;
+}
+
+#editor-container {
+    width: 100%;
+}
+
+.ql-toolbar {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.ql-container {
+    width: 100%;
+    min-height: 70vh !important;
 }
 
 @media screen and (max-width: 800px) {

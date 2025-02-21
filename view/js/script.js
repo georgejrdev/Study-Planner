@@ -309,13 +309,72 @@ async function handleCreateText(){
     }
 }
 
+var quill
+
+if (document.getElementById("main-new-text") != null) {
+    quill = new Quill('#editor', {
+        theme: 'snow'  
+    })
+
+    renderText()
+
+    quill.on('text-change', function(delta, oldDelta, source) {
+        clearTimeout(window.quillTimeout) 
+        window.quillTimeout = setTimeout(() => {
+            handleUpdateText()
+        }, 500) 
+    })
+}
+
 async function handleUpdateText(){
     const parameters = new URLSearchParams(window.location.search)
     const id = Number(parameters.get("id"))
     const title = document.getElementById("file-name").value
-    const content = document.getElementById("textarea-content").value
+    const text = quill.root.innerHTML
     const subjectId = (Number(document.getElementById("subject").value) === -1 ) ? null : Number(document.getElementById("subject").value)
-    await window.api.db.text.updateText(id, subjectId, title, content)
+    const res = await window.api.db.text.updateText(id, subjectId, title, text)
+
+    if (res[0] !== null) {
+        showMessage("Ocorreu um erro ao salvar o texto", "error")
+    }
+}
+
+async function renderText(){
+    const parameters = new URLSearchParams(window.location.search)
+    const id = parameters.get("id")
+
+    const res = await window.api.db.global.findBy("texts", `id = ${id}`)
+
+    if (res[0] === null) {
+        const text = res[1][0]
+        document.getElementById("file-name").value = text.title
+        quill.root.innerHTML = text.text
+        const subjectId = (text.subjects_id == null) ? -1 : text.subjects_id
+        
+        const resSubjects = await window.api.db.global.findAll("subjects")
+
+        if (resSubjects[0] === null) {
+            const subjects = resSubjects[1]
+            const selectSubjects = document.getElementById("subject")
+
+            const defaultOption = document.createElement("option")
+            defaultOption.value = -1
+            defaultOption.innerText = "Disciplina"
+            selectSubjects.appendChild(defaultOption)
+
+            subjects.forEach(subject => {
+                const option = document.createElement("option")
+                option.value = subject.id
+                option.innerText = subject.name
+
+                if (subject.id == subjectId) {
+                    option.selected = true
+                }
+
+                selectSubjects.appendChild(option)
+            })
+        }
+    }
 }
 
 async function handleDeleteText(){
