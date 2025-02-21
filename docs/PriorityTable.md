@@ -1,40 +1,28 @@
-# Features
+**Priority Table:**
 
-- [ ] Controle de faltas
-- [ ] Controle de notas
-- [ ] Agenda
-    - [ ] Recomendação de prioridade
-        - ? Urgência [Baixa | Média | Alta]
-        - ? Impacto [Baixa | Média | Alta]
-        - Desempate = data
-        - 9 níveis de prioridade
-
-
-## Tabela de prioridade:
-
-*Considere 0 como a maior prioridade e 8 como a menor possível*
+*Consider 0 as the highest priority and 8 as the lowest possible*
 
 <table>
     <thead>
         <tr>
             <th>
-                Urgência
+                Urgency
             </th>
             <th>
-                Impacto
+                Impact
             </th>
             <th>
-                Prioridade
+                Priority
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
-                Alto
+                High
             </td>
             <td>
-                Alto
+                High
             </td>
             <td>
                 0
@@ -42,10 +30,10 @@
         </tr>
         <tr>
             <td>
-                Alto
+                High
             </td>
             <td>
-                Médio
+                Medium
             </td>
             <td>
                 1
@@ -53,10 +41,10 @@
         </tr>
         <tr>
             <td>
-                Alto
+                High
             </td>
             <td>
-                Baixo
+                Low
             </td>
             <td>
                 2
@@ -64,10 +52,10 @@
         </tr>
         <tr>
             <td>
-                Médio
+                Medium
             </td>
             <td>
-                Alto
+                High
             </td>
             <td>
                 3
@@ -75,10 +63,10 @@
         </tr>
         <tr>
             <td>
-                Médio
+                Medium
             </td>
             <td>
-                Médio
+                Medium
             </td>
             <td>
                 4
@@ -86,10 +74,10 @@
         </tr>
         <tr>
             <td>
-                Médio
+                Medium
             </td>
             <td>
-                Baixo
+                Low
             </td>
             <td>
                 5
@@ -97,10 +85,10 @@
         </tr>
         <tr>
             <td>
-                Baixo
+                Low
             </td>
             <td>
-                Alto
+                High
             </td>
             <td>
                 6
@@ -108,10 +96,10 @@
         </tr>
         <tr>
             <td>
-                Baixo
+                Low
             </td>
             <td>
-                Médio
+                Medium
             </td>
             <td>
                 7
@@ -119,10 +107,10 @@
         </tr>
         <tr>
             <td>
-                Baixo
+                Low
             </td>
             <td>
-                Baixo
+                Low
             </td>
             <td>
                 8

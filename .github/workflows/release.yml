@@ -1,0 +1,63 @@
+name: Release Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Extract version from package.json
+        id: version
+        shell: pwsh
+        run: |
+          $VERSION = node -p "require('./package.json').version"
+          echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Update version in defaultValues.js
+        shell: pwsh
+        run: |
+          $file = "./backend/defaultValues.js"
+          $version = $env:VERSION
+          (Get-Content $file) -replace 'const VERSION = "[0-9]+\.[0-9]+\.[0-9]+"', "const VERSION = `"$version`"" | Set-Content -Path $file -Encoding UTF8
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add ./backend/defaultValues.js
+          git commit -m "Update version to $env:VERSION"
+          git push
+
+      - name: Build application
+        run: npm run package-win
+
+      - name: Compress dist directory
+        shell: pwsh
+        run: |
+          $zipPath = "StudyPlanner-$env:VERSION.zip"
+          if (Test-Path $zipPath) { Remove-Item $zipPath }
+          Compress-Archive -Path ./dist/Study-Planner-win32-x64 -DestinationPath $zipPath -Force
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          files: StudyPlanner-${{ env.VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
