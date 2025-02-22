@@ -18,6 +18,7 @@ if (document.getElementById("main-home") != null) {
     renderAbsences()
     renderAbsenceReasonPieChart()
     renderGradeChart()
+    handleIsNewRelease()
 }
 
 if (document.getElementById("main-texts") != null) {
@@ -37,6 +38,14 @@ if (document.getElementById("main-edit-task") != null) {
 function formateDateToBR(dataSQLite) {
     const [year, month, day] = dataSQLite.split("-")
     return `${day}/${month}/${year}`
+}
+
+async function handleIsNewRelease(){
+    const res = await window.api.program.isNewRelease()
+
+    if (res === true) {
+        document.getElementById("update-available").style.display = "flex"
+    }
 }
 
 async function handleGetVersion(){

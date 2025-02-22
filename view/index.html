@@ -83,7 +83,7 @@
         </section>
     </main>
 
-    <div id="confirm-absence">
+    <div class="popup" id="confirm-absence">
         <select class="form-input" name="absence-reason-select" id="absence-reason-select">
             <option value="0">Selecione o motivo</option>
             <option value="nenhum">Nenhum</option>
@@ -95,9 +95,18 @@
             <option value="lazer">Lazer</option>
         </select>
 
-        <div id="absence-confirm-buttons">
-            <input onclick="hideConfirmAbsence()" id="cancel" type="button" value="CANCELAR">
-            <input onclick="handleCreateAbsence()" id="confirm" type="button" value="CONFIRMAR">
+        <div class="group-buttons" id="absence-confirm-buttons">
+            <input onclick="hideConfirmAbsence()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleCreateAbsence()" class="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
+
+    <div class="popup" id="update-available">
+        <h2>Nova versão disponível</h2>
+        <p class="form-alert">*Ao clicar em atualizar, o aplicativo será reiniciado</p>
+        <div class="group-buttons">
+            <input onclick="hideUpdateProgram()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleUpdate()" class="confirm" type="button" value="ATUALIZAR">
         </div>
     </div>
 

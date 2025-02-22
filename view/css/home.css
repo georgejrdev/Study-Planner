@@ -128,45 +128,6 @@
     background-color: var(--red);
 }
 
-#confirm-absence {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 150px;
-    background-color: var(--alt-gray);
-    border: 2px solid black;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    row-gap: 25px;
-}
-
-
-#absence-confirm-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-#absence-confirm-buttons > input {
-    width: 100px;
-    height: 25px;
-    padding: 2px;
-    border: 2px solid black;
-}
-
-#confirm {
-    background-color: var(--dark-red);
-    color: white;
-}
-
-#cancel {
-    background-color: var(--dark-blue);
-    color: white;
-}
-
 .absence-number {
     margin: auto;
     margin-top: 10px;

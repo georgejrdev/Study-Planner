@@ -8,6 +8,7 @@ const textDB = require("./backend/db/text")
 const gradeDB = require("./backend/db/grade")
 const absenceDB = require("./backend/db/absence")
 const subjectDB = require("./backend/db/subject")
+const updater = require("./update")
 
 let mainWindow
 
@@ -23,12 +24,20 @@ app.whenReady().then(() => {
         }
     })
 
-    Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null)
     mainWindow.loadFile("./view/index.html")
 })
 
 ipcMain.handle("get-version", () => {
     return program.getVersion()
+})
+
+ipcMain.handle("is-new-release", async () => {
+    return await updater.isNewRelease()
+})
+
+ipcMain.handle("update", async () => {
+    return await updater.update()
 })
 
 ipcMain.handle("find-all", async (_, tableName) => {
