@@ -16,6 +16,9 @@ app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 700,
+        icon: process.platform === 'win32' 
+            ? path.join(__dirname, 'assets', 'icon.ico') 
+            : path.join(__dirname, 'assets', 'icon.png'),
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             contextIsolation: true,
@@ -24,7 +27,7 @@ app.whenReady().then(() => {
         }
     })
 
-    //Menu.setApplicationMenu(null)
+    Menu.setApplicationMenu(null)
     mainWindow.loadFile("./view/index.html")
 })
 
