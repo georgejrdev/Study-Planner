@@ -25,6 +25,79 @@ function hideUpdateProgram(){
     document.getElementById("update-available").style.display = "none"
 }
 
+// Workspaces
+async function selectNewWorkspace() {
+    const selectOption = document.getElementById("workspace-selector").value
+    
+    if (selectOption === "create") {
+        showCreateWorkspace()
+    } else if (selectOption === "delete") {
+        showDeleteWorkspace()
+    } else {
+        const id = Number(selectOption)
+        const res = await window.api.db.workspace.changeCurrentWorkspace(id)
+
+        if (res[0] === null) {
+            showMessage("Workspace alterado com sucesso!", "success")
+        } else {
+            showMessage("Ocorreu um erro ao alterar o workspace", "error")
+        }
+    }
+}
+
+function showCreateWorkspace() {
+    document.getElementById("create-workspace").style.display = "flex"
+}
+
+function hideCreateWorkspace() {
+    document.getElementById("create-workspace").style.display = "none"
+}
+
+async function handleCreateWorkspace() {
+    const name = document.getElementById("workspace-name").value
+    const res = await window.api.db.workspace.createWorkspace(name)
+
+    if (res[0] === null) {
+        showMessage("Workspace criado com sucesso!", "success")
+    } else {
+        showMessage("Ocorreu um erro ao criar o workspace", "error")
+    }
+}
+
+async function showDeleteWorkspace() {
+    document.getElementById("delete-workspace").style.display = "flex"
+
+    const selectNewWorkspaces = document.getElementById("workspace-select-delete")
+    const resWorkspaces = await window.api.db.workspace.find("workspaces")
+    const workspaces = resWorkspaces[1]
+
+    workspaces.forEach(workspace => {
+        const option = document.createElement("option")
+        option.value = workspace.id
+        option.innerText = workspace.name
+        selectNewWorkspaces.appendChild(option)
+    })
+}
+
+function hideDeleteWorkspace() {
+    document.getElementById("delete-workspace").style.display = "none"
+}
+
+async function handleDeleteWorkspace() {
+    const id = Number(document.getElementById("workspace-select-delete").value)
+    const res = await window.api.db.workspace.deleteWorkspace(id)
+
+    if (res[0] === null) {
+        showMessage("Workspace deletado com sucesso!", "success")
+    } else {
+        if (res[0] === "Você precisa de no mínimo um workspace") {
+            showMessage(res[0], "error")
+        } else {
+            showMessage("Ocorreu um erro ao deletar o workspace", "error")
+        }
+    }
+}
+
 // Tasks
 async function handleCreateTask(){
     const text = document.getElementById('form-create-task-text').value

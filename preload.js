@@ -37,6 +37,12 @@ contextBridge.exposeInMainWorld("api", {
         absence: {
             createAbsence: (date, reason) => ipcRenderer.invoke("create-absence", date, reason),
             deleteAbsence: (date) => ipcRenderer.invoke("delete-absence", date),
+        },
+        workspace: {
+            createWorkspace: (name) => ipcRenderer.invoke("create-workspace", name),
+            changeCurrentWorkspace: (id) => ipcRenderer.invoke("change-current-workspace", id),
+            find: (table) => ipcRenderer.invoke("find-workspaces", table),
+            deleteWorkspace: (id) => ipcRenderer.invoke("delete-workspace", id),
         }
     }
 })

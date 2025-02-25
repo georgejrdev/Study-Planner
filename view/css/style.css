@@ -114,11 +114,11 @@ canvas {
 header {
     width: 100vw;
     max-width: 100%;
-    height: 8vh;
+    height: 10vh;
     background-color: black;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     align-items: center;
     justify-content: center;
 }
@@ -131,6 +131,22 @@ header > p, header > p > a {
 header > #version-number {
     font-size: 12px;
     font-weight: normal;
+}
+
+#workspace-selector {
+    border: 0px;   
+    background-color: #2c2c2c;
+    color: #D4D4D4;
+    padding: 2px;
+    border-radius: 0px;
+}
+
+#create-new-workspace {
+    color: var(--dark-green);
+}
+
+#delete-workspace {
+    color: var(--dark-red);
 }
 
 #back-button {
@@ -148,7 +164,7 @@ header > #version-number {
 main {
     width: 100vw;
     max-width: 100%;
-    height: 92vh;
+    height: 90vh;
     background-color: white;
     display: flex;
     align-items: center;

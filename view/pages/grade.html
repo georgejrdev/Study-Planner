@@ -17,6 +17,12 @@
 <body>
     <header>
         <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+
+        <select onchange="selectNewWorkspace()" name="workspace-selector" id="workspace-selector">
+            <option id="create-new-workspace" value="create">Criar novo workspace</option>
+            <option id="delete-workspace" value="delete">Deletar workspace</option>
+        </select>
+        
         <p id="version-number"></p>
         
         <input onclick="window.history.back()" type="button" value="<-" id="back-button">

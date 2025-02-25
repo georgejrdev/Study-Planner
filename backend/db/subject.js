@@ -1,6 +1,4 @@
-const db = require('./connection') 
-
-function createSubject(name, minGrade, maxGrade) {
+function createSubject(db, name, minGrade, maxGrade) {
     let query = "INSERT INTO subjects (name, min_grade, max_grade) VALUES (?, ?, ?)"
     const values = [name, minGrade, maxGrade]
 
@@ -13,7 +11,7 @@ function createSubject(name, minGrade, maxGrade) {
     return [null, true]
 }
 
-function updateSubject(id, name) {
+function updateSubject(db, id, name) {
     let query = "UPDATE subjects SET name = ? WHERE id = ?"
     const values = [name, id]
 
@@ -26,7 +24,7 @@ function updateSubject(id, name) {
     return [null, true]
 }
 
-function deleteSubject(id) {
+function deleteSubject(db, id) {
     let query = "DELETE FROM subjects WHERE id = ?"
     const values = [id]
 

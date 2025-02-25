@@ -2,6 +2,10 @@ if (document.getElementById("version-number") != null){
     handleGetVersion()
 }
 
+if (document.getElementById("workspace-selector") != null) {
+    renderWorkspaces()
+}
+
 if (document.getElementById("main-tasks") != null) {
     renderTasks()
     renderPriorityPieChart()
@@ -51,6 +55,26 @@ async function handleIsNewRelease(){
 async function handleGetVersion(){
     const version = await window.api.program.getVersion()
     document.getElementById("version-number").innerText = `v${version}`
+}
+
+async function renderWorkspaces(){
+    const selectNewWorkspaces = document.getElementById("workspace-selector")
+    const resWorkspaces = await window.api.db.workspace.find("workspaces")
+    const workspaces = resWorkspaces[1]
+    const resCurrentWorkspaces = await window.api.db.workspace.find("current_workspace")
+    const currentWorkspace = resCurrentWorkspaces[1][0]
+
+    workspaces.forEach(workspace => {
+        const option = document.createElement("option")
+        option.value = workspace.id
+        option.innerText = `Workspace atual: ${workspace.name} | Clique para mudar`
+
+        if (workspace.id == currentWorkspace.workspace_id) {
+            option.selected = true
+        }
+
+        selectNewWorkspaces.appendChild(option)
+    })
 }
 
 async function renderTasks(){

@@ -17,6 +17,10 @@
 <body>
     <header>
         <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
+        <select onchange="selectNewWorkspace()" name="workspace-selector" id="workspace-selector">
+            <option id="create-new-workspace" value="create">Criar novo workspace</option>
+            <option id="delete-workspace" value="delete">Deletar workspace</option>
+        </select>
         <p id="version-number"></p>
     </header>
     <main id="main-home">
@@ -107,6 +111,25 @@
         <div class="group-buttons">
             <input onclick="hideUpdateProgram()" class="cancel" type="button" value="CANCELAR">
             <input onclick="handleUpdate()" class="confirm" type="button" value="ATUALIZAR">
+        </div>
+    </div>
+
+    <div class="popup" id="create-workspace">
+        <input type="text" class="form-input" name="workspace-name" id="workspace-name" placeholder="Nome do workspace">
+        <div class="group-buttons">
+            <input onclick="hideCreateWorkspace()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleCreateWorkspace()" class="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
+
+    <div class="popup" id="delete-workspace">
+        <p>Selecione o workspace que deseja excluir</p>
+
+        <select class="form-input" name="workspace-select-delete" id="workspace-select-delete"></select>
+
+        <div class="group-buttons">
+            <input onclick="hideDeleteWorkspace()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleDeleteWorkspace()" class="confirm" type="button" value="CONFIRMAR">
         </div>
     </div>
 

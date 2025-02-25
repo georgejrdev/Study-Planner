@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain } = require("electron")
 const path = require("path")
 
+const _ = require("./backend/db/init")
 const program = require("./backend/defaultValues")
 const globalDB = require("./backend/db/global")
 const taskDB = require("./backend/db/task")
@@ -8,6 +9,7 @@ const textDB = require("./backend/db/text")
 const gradeDB = require("./backend/db/grade")
 const absenceDB = require("./backend/db/absence")
 const subjectDB = require("./backend/db/subject")
+const workspaceDB = require("./backend/db/workspaces")
 const updater = require("./update")
 
 let mainWindow
@@ -44,77 +46,122 @@ ipcMain.handle("update", async () => {
 })
 
 ipcMain.handle("find-all", async (_, tableName) => {
-    return await globalDB.findAll(tableName)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await globalDB.findAll(db, tableName)
 })
 
 ipcMain.handle("find-by", async (_, tableName, condition) => {
-    return await globalDB.findBy(tableName, condition)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await globalDB.findBy(db, tableName, condition)
 })
 
 ipcMain.handle("find-query", async (_, query) => {
-    return await globalDB.findQuery(query)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await globalDB.findQuery(db, query)
 })
 
 ipcMain.handle("create-task", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await taskDB.createTask(...args)
 })
 
 ipcMain.handle("update-task", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await taskDB.updateTask(...args)
 })
 
 ipcMain.handle("check-task", async (_, id, checked) => {
-    return await taskDB.checkTask(id, checked)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await taskDB.checkTask(db, id, checked)
 })
 
 ipcMain.handle("delete-task", async (_, id) => {
-    return await taskDB.deleteTask(id)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await taskDB.deleteTask(db, id)
 })
 
 ipcMain.handle("create-text", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await textDB.createText(...args)
 })
 
 ipcMain.handle("update-text", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await textDB.updateText(...args)
 })
 
 ipcMain.handle("delete-text", async (_, id) => {
-    return await textDB.deleteText(id)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await textDB.deleteText(db, id)
 })
 
 ipcMain.handle("search", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await textDB.search(...args)
 })
 
 ipcMain.handle("create-subject", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return subjectDB.createSubject(...args)
 })
 
 ipcMain.handle("update-subject", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return subjectDB.updateSubject(...args)
 })
 
 ipcMain.handle("delete-subject", async (_, id) => {
-    return subjectDB.deleteSubject(id)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return subjectDB.deleteSubject(db, id)
 })
 
 ipcMain.handle("create-grade", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return gradeDB.createGrade(...args)
 })
 
 ipcMain.handle("update-grade", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return gradeDB.updateGrade(...args)
 })
 
 ipcMain.handle("delete-grade", async (_, id) => {
-    return gradeDB.deleteGrade(id)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return gradeDB.deleteGrade(db, id)
 })
 
 ipcMain.handle("create-absence", async (_, ...args) => {
+    const db = await globalDB.getWorkspaceDBInstace()
+    args.unshift(db)
     return await absenceDB.createAbsence(...args)
 })
 
 ipcMain.handle("delete-absence", async (_, date) => {
-    return await absenceDB.deleteAbsence(date)
+    const db = await globalDB.getWorkspaceDBInstace()
+    return await absenceDB.deleteAbsence(db, date)
+})
+
+ipcMain.handle("create-workspace", async (_, name) => {
+    return await workspaceDB.createWorkspace(name)
+})
+
+ipcMain.handle("change-current-workspace", async (_, id) => {
+    return await workspaceDB.changeCurrentWorkspace(id)
+})
+
+ipcMain.handle("find-workspaces" , async (_, table) => {
+    return await workspaceDB.find(table)
+})
+
+ipcMain.handle("delete-workspace", async (_, id) => {
+    return await workspaceDB.deleteWorkspace(id)
 })

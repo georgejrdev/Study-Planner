@@ -1,6 +1,4 @@
-const db = require('./connection')
-
-async function createAbsence(date, reason) {
+async function createAbsence(db, date, reason) {
     try {
         await new Promise((resolve, reject) => {
             let query = "INSERT INTO absences (date, reason) VALUES (?, ?)"
@@ -17,7 +15,7 @@ async function createAbsence(date, reason) {
     }
 }
 
-async function deleteAbsence(date) {
+async function deleteAbsence(db, date) {
     try {
         await new Promise((resolve, reject) => {
             let query = "DELETE FROM absences WHERE date = ?"

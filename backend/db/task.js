@@ -1,5 +1,3 @@
-const db = require('./connection')
-
 function getPriorityLevel(urgency, impact) {
     urgency = urgency.toUpperCase()
     impact = impact.toUpperCase()
@@ -13,7 +11,7 @@ function getPriorityLevel(urgency, impact) {
     return levels[`${urgency}_${impact}`] !== undefined ? levels[`${urgency}_${impact}`] : 8
 }
 
-function createTask(date, text, urgency, impact) {
+function createTask(db, date, text, urgency, impact) {
     return new Promise((resolve, reject) => {
         const priorityLevel = getPriorityLevel(urgency, impact)
         
@@ -27,7 +25,7 @@ function createTask(date, text, urgency, impact) {
     })
 }
 
-function updateTask(id, date, text, urgency, impact, checked) {
+function updateTask(db, id, date, text, urgency, impact, checked) {
     return new Promise((resolve, reject) => {
         const priorityLevel = getPriorityLevel(urgency, impact)
         
@@ -41,7 +39,7 @@ function updateTask(id, date, text, urgency, impact, checked) {
     })
 }
 
-function checkTask(id, checked) {
+function checkTask(db, id, checked) {
     return new Promise((resolve, reject) => {
         let query = "UPDATE tasks SET checked = ? WHERE id = ?"
         const values = [checked, id]
@@ -53,7 +51,7 @@ function checkTask(id, checked) {
     })
 }
 
-function deleteTask(id) {
+function deleteTask(db, id) {
     return new Promise((resolve, reject) => {
         let query = "DELETE FROM tasks WHERE id = ?"
         const values = [id]
