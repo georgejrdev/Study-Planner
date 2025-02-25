@@ -1,4 +1,4 @@
-const VERSION = "1.2.0"
+const VERSION = "1.3.0"
 const RELEASES_URL = "https://api.github.com/repos/georgejrdev/Study-Planner/releases"
 
 function getVersion() {
