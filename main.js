@@ -29,7 +29,7 @@ app.whenReady().then(() => {
         }
     })
 
-    Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null)
     mainWindow.loadFile("./view/index.html")
 })
 

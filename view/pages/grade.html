@@ -19,8 +19,8 @@
         <p>Made by <a target="_blank" noopener="noreferrer" href="https://georgejrdev.github.io/Link-Tree/">George Júnior</a></p>
 
         <select onchange="selectNewWorkspace()" name="workspace-selector" id="workspace-selector">
-            <option id="create-new-workspace" value="create">Criar novo workspace</option>
-            <option id="delete-workspace" value="delete">Deletar workspace</option>
+            <option id="create-new-workspace-option" value="create">Criar novo workspace</option>
+            <option id="delete-workspace-option" value="delete">Deletar workspace</option>
         </select>
         
         <p id="version-number"></p>
@@ -94,6 +94,25 @@
             </div>
         </section>
     </main>
+
+    <div class="popup" id="create-workspace">
+        <input type="text" class="form-input" name="workspace-name" id="workspace-name" placeholder="Nome do workspace">
+        <div class="group-buttons">
+            <input onclick="hideCreateWorkspace()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleCreateWorkspace()" class="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
+
+    <div class="popup" id="delete-workspace">
+        <h2>Selecione o workspace que deseja excluir</h2>
+
+        <select class="form-input" name="workspace-select-delete" id="workspace-select-delete"></select>
+
+        <div class="group-buttons">
+            <input onclick="hideDeleteWorkspace()" class="cancel" type="button" value="CANCELAR">
+            <input onclick="handleDeleteWorkspace()" class="confirm" type="button" value="CONFIRMAR">
+        </div>
+    </div>
 
     <script src="../js/script.js"></script>
     <script src="../js/renderData.js"></script>
