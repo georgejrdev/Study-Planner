@@ -8,41 +8,43 @@ contextBridge.exposeInMainWorld("api", {
     },
     db: {
         global: {
-            findAll: (table) => ipcRenderer.invoke("find-all", table),
-            findBy: (table, condition) => ipcRenderer.invoke("find-by", table, condition),
-            findQuery: (query) => ipcRenderer.invoke("find-query", query),
-        },
-        task: {
-            createTask: (date, text, urgency, impact) => ipcRenderer.invoke("create-task", date, text, urgency, impact),
-            checkTask: (id, checked) => ipcRenderer.invoke("check-task", id, checked),
-            updateTask: (id, date, text, urgency, impact, checked) => ipcRenderer.invoke("update-task", id, date, text, urgency, impact, checked),
-            deleteTask: (id) => ipcRenderer.invoke("delete-task", id),
-        },
-        text: {
-            createText: (subject_id, title, text, date) => ipcRenderer.invoke("create-text", subject_id, title, text, date),
-            updateText: (id, subject_id, title, text) => ipcRenderer.invoke("update-text", id, subject_id, title, text),
-            deleteText: (id) => ipcRenderer.invoke("delete-text", id),
-            search: (input) => ipcRenderer.invoke("search", input),
-        },
-        subject: {
-            createSubject: (name, minGrade, maxGrade) => ipcRenderer.invoke("create-subject", name, minGrade, maxGrade),
-            updateSubject: (id, name) => ipcRenderer.invoke("update-subject", id, name),
-            deleteSubject: (id) => ipcRenderer.invoke("delete-subject", id),
-        },
-        grade: {
-            createGrade: (subjectId, grade, origin) => ipcRenderer.invoke("create-grade", subjectId, grade, origin),
-            updateGrade: (id, grade, origin) => ipcRenderer.invoke("update-grade", id, grade, origin),
-            deleteGrade: (id) => ipcRenderer.invoke("delete-grade", id),
-        },
-        absence: {
-            createAbsence: (date, reason) => ipcRenderer.invoke("create-absence", date, reason),
-            deleteAbsence: (date) => ipcRenderer.invoke("delete-absence", date),
+            find: (workspaceScope, query, values) => ipcRenderer.invoke("global-find", workspaceScope, query, values),
         },
         workspace: {
-            createWorkspace: (name) => ipcRenderer.invoke("create-workspace", name),
-            changeCurrentWorkspace: (id) => ipcRenderer.invoke("change-current-workspace", id),
-            find: (table) => ipcRenderer.invoke("find-workspaces", table),
-            deleteWorkspace: (id) => ipcRenderer.invoke("delete-workspace", id),
+            create: (name) => ipcRenderer.invoke("workspace-create", name),
+            change: (id) => ipcRenderer.invoke("workspace-change", id),
+            delete: (id) => ipcRenderer.invoke("workspace-delete", id),
+        },
+        subject: {
+            create: (name, minGrade, maxGrade) => ipcRenderer.invoke("subject-create", name, minGrade, maxGrade),
+            update: (id, name) => ipcRenderer.invoke("subject-update", id, name),
+            delete: (id) => ipcRenderer.invoke("subject-delete", id),
+            getDataToPerformanceChart: () => ipcRenderer.invoke("subject-get-data-to-performance-chart"),
+        },
+        task: {
+            create: (date, text, urgency, impact) => ipcRenderer.invoke("task-create", date, text, urgency, impact),
+            update: (id, date, text, urgency, impact, checked) => ipcRenderer.invoke("task-update", id, date, text, urgency, impact, checked),
+            delete: (id) => ipcRenderer.invoke("task-delete", id),
+            getDataToPriorityChart: () => ipcRenderer.invoke("task-get-data-to-priority-chart"),
+        },
+        absence: {
+            create: (date, reason) => ipcRenderer.invoke("absence-create", date, reason),
+            delete: (date) => ipcRenderer.invoke("absence-delete", date),
+            getDataToAbsenceReasonChart: () => ipcRenderer.invoke("absence-get-data-to-absence-reason-chart"),
+        },
+        grade: {
+            create: (subjectId, grade, origin) => ipcRenderer.invoke("grade-create", subjectId, grade, origin),
+            update: (id, grade, origin) => ipcRenderer.invoke("grade-update", id, grade, origin),
+            delete: (id) => ipcRenderer.invoke("grade-delete", id),
+            getDataToGradeChart: () => ipcRenderer.invoke("grade-get-data-to-grade-chart"),
+        },
+        text: {
+            create: (subjectId, title, text, date) => ipcRenderer.invoke("text-create", subjectId, title, text, date),
+            update: (id, subjectId, title, text) => ipcRenderer.invoke("text-update", id, subjectId, title, text),
+            search: (input) => ipcRenderer.invoke("text-search", input),
+            delete: (id) => ipcRenderer.invoke("text-delete", id),
+            getDataToTextSubjectChart: () => ipcRenderer.invoke("text-get-data-to-text-subject-chart"),
+            getDataToTetDistributionOverTimeChart: () => ipcRenderer.invoke("text-get-data-to-tet-distribution-over-time-chart"),
         }
     }
 })

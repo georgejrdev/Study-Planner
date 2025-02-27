@@ -1,71 +1,86 @@
-function getPriorityLevel(urgency, impact) {
-    urgency = urgency.toUpperCase()
-    impact = impact.toUpperCase()
-    
-    const levels = {
-        "HIGH_HIGH": 0, "HIGH_MEDIUM": 1, "HIGH_LOW": 2,
-        "MEDIUM_HIGH": 3, "MEDIUM_MEDIUM": 4, "MEDIUM_LOW": 5,
-        "LOW_HIGH": 6, "LOW_MEDIUM": 7, "LOW_LOW": 8
+class Task {
+    #dbExec
+
+    constructor(dbExec) {
+        this.#dbExec = dbExec
     }
 
-    return levels[`${urgency}_${impact}`] !== undefined ? levels[`${urgency}_${impact}`] : 8
-}
+    async create(date, text, urgency, impact) {
+        const priorityLevel = this.#getPriorityLevel(urgency, impact)
+        const query = "INSERT INTO tasks (date, text, priority_level, urgency, impact, checked) VALUES (?, ?, ?, ?, ?, ?)"
+        const response = await this.#dbExec.exec(
+            {
+                query: query, 
+                values: [date, text, priorityLevel, urgency, impact, false], 
+                message: {"error":"Error occured while creating task", "success":"Task created successfully"},
+                frontendMessageCode: {"error":21,"success": 22},
+                fileOrigin: "task.js", 
+                methodOrigin: "create"
+            }
+        )
 
-function createTask(db, date, text, urgency, impact) {
-    return new Promise((resolve, reject) => {
-        const priorityLevel = getPriorityLevel(urgency, impact)
+        return response
+    }
+
+    async update(id, date, text, urgency, impact, checked) {
+        const priorityLevel = this.#getPriorityLevel(urgency, impact)
+        const query = "UPDATE tasks SET date = ?, text = ?, priority_level = ?, urgency = ?, impact = ?, checked = ? WHERE id = ?"
+        const response = await this.#dbExec.exec(
+            {
+                query: query, 
+                values: [date, text, priorityLevel, urgency, impact, checked, id], 
+                message: {"error":"Error occured while updating task", "success":"Task updated successfully"},
+                frontendMessageCode: {"error":23,"success": 24},
+                fileOrigin: "task.js", 
+                methodOrigin: "update"
+            }
+        )
+
+        return response
+    }
+
+    async delete(id) {
+        const query = "DELETE FROM tasks WHERE id = ?"
+        const response = await this.#dbExec.exec(
+            {
+                query: query, 
+                values: [id], 
+                message: {"error":"Error occured while deleting task", "success":"Task deleted successfully"},
+                frontendMessageCode: {"error":25,"success": 26},
+                fileOrigin: "task.js", 
+                methodOrigin: "delete"
+            }
+        )   
+
+        return response
+    }
+
+    async getDataToPriorityChart() {
+        const query = "SELECT priority_level, COUNT(*) AS task_count FROM tasks WHERE checked = 0 GROUP BY priority_level"
+        const response = await this.#dbExec.get(
+            {
+                query: query, 
+                message: {"error":"Error occured while getting data to priority chart", "success":"Get data to priority chart executed successfully"},
+                fileOrigin: "task.js", 
+                methodOrigin: "getDataToPriorityChart"
+            }
+        )
+
+        return response
+    }
+
+    #getPriorityLevel(urgency, impact) {
+        urgency = urgency.toUpperCase()
+        impact = impact.toUpperCase()
         
-        let query = "INSERT INTO tasks (date, text, priority_level, urgency, impact, checked) VALUES (?, ?, ?, ?, ?, ?)"
-        const values = [date, text, priorityLevel, urgency, impact, false]
-
-        db.run(query, values, function (err) {
-            if (err) return reject([err, null])
-            resolve([null, true])
-        })
-    })
+        const levels = {
+            "HIGH_HIGH": 0, "HIGH_MEDIUM": 1, "HIGH_LOW": 2,
+            "MEDIUM_HIGH": 3, "MEDIUM_MEDIUM": 4, "MEDIUM_LOW": 5,
+            "LOW_HIGH": 6, "LOW_MEDIUM": 7, "LOW_LOW": 8
+        }
+    
+        return levels[`${urgency}_${impact}`] !== undefined ? levels[`${urgency}_${impact}`] : 8
+    }
 }
 
-function updateTask(db, id, date, text, urgency, impact, checked) {
-    return new Promise((resolve, reject) => {
-        const priorityLevel = getPriorityLevel(urgency, impact)
-        
-        let query = "UPDATE tasks SET date = ?, text = ?, priority_level = ?, urgency = ?, impact = ?, checked = ? WHERE id = ?"
-        const values = [date, text, priorityLevel, urgency, impact, checked, id]
-
-        db.run(query, values, function (err) {
-            if (err) return reject([err, null])
-            resolve([null, true])
-        })
-    })
-}
-
-function checkTask(db, id, checked) {
-    return new Promise((resolve, reject) => {
-        let query = "UPDATE tasks SET checked = ? WHERE id = ?"
-        const values = [checked, id]
-
-        db.run(query, values, function (err) {
-            if (err) return reject([err, null])
-            resolve([null, true])
-        })
-    })
-}
-
-function deleteTask(db, id) {
-    return new Promise((resolve, reject) => {
-        let query = "DELETE FROM tasks WHERE id = ?"
-        const values = [id]
-
-        db.run(query, values, function (err) {
-            if (err) return reject([err, null])
-            resolve([null, true])
-        })
-    })
-}
-
-module.exports = { 
-    createTask, 
-    updateTask, 
-    checkTask, 
-    deleteTask 
-}
+module.exports = Task
