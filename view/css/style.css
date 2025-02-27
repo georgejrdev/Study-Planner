@@ -26,6 +26,7 @@
 .error {
     background-color: rgb(202, 84, 84);
     width: 25vw;
+    box-sizing: content-box !important;
     padding: 10px;
     height: 30px;
     position: absolute;
@@ -39,6 +40,7 @@
 }
 
 .error > p {
+    text-align: center;
     color: #FFF;
 }
 
@@ -46,6 +48,7 @@
     background-color: rgb(186, 241, 186);
     width: 25vw;
     padding: 10px;
+    box-sizing: content-box !important;
     height: 30px;
     position: absolute;
     top: 70px;
@@ -58,6 +61,7 @@
 }
 
 .success > p {
+    text-align: center;
     color: #000000;
 }
 
@@ -121,12 +125,15 @@ header {
     width: 100vw;
     max-width: 100%;
     height: 10vh;
+    box-sizing: content-box !important;
     background-color: black;
     display: flex;
     flex-direction: column;
     gap: 8px;
     align-items: center;
     justify-content: center;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
 }
 
 header > p, header > p > a {
@@ -170,7 +177,7 @@ header > #version-number {
 main {
     width: 100vw;
     max-width: 100%;
-    height: 90vh;
+    height: 89vh;
     background-color: white;
     display: flex;
     align-items: center;
