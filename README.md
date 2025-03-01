@@ -7,6 +7,12 @@ The Study Planner is an innovative platform designed to help students efficientl
 
 ## Features
 
+**Workspaces**
+
+Have multiple workspaces to manage different study spaces. College, self-education, all in a single application, properly separated.
+
+<br>
+
 **Charts:**
 
 Charts that help you analyze and understand the status of your studies.
