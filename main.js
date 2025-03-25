@@ -2,10 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require("electron")
 const path = require("path")
 
 const program = require("./backend/defaultValues")
-const updater = require("./update")
-
-// const run = require("./backend/tests/test")
-// run()
+// const updater = require("./update")
 
 const Start = require("./backend/db/start")
 const Global = require("./backend/db/global")
@@ -48,13 +45,13 @@ ipcMain.handle("get-version", () => {
     return program.getVersion()
 })
 
-ipcMain.handle("is-new-release", async () => {
-    return await updater.isNewRelease()
-})
+// ipcMain.handle("is-new-release", async () => {
+//     return await updater.isNewRelease()
+// })
 
-ipcMain.handle("update", async () => {
-    return await updater.update()
-})
+// ipcMain.handle("update", async () => {
+//     return await updater.update()
+// })
 
 ipcMain.handle("global-find", async (_, workspaceScope, query, values) => {
     let globalInstance = new Global()

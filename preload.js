@@ -3,8 +3,8 @@ const { contextBridge, ipcRenderer } = require("electron")
 contextBridge.exposeInMainWorld("api", {
     program: {
         getVersion: () => ipcRenderer.invoke("get-version"),
-        isNewRelease: () => ipcRenderer.invoke("is-new-release"),
-        update: () => ipcRenderer.invoke("update"),
+        // isNewRelease: () => ipcRenderer.invoke("is-new-release"),
+        // update: () => ipcRenderer.invoke("update"),
     },
     db: {
         global: {

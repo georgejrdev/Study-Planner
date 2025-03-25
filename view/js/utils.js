@@ -1,10 +1,10 @@
-export async function handleIsNewRelease(){
-    const response = await window.api.program.isNewRelease()
+// export async function handleIsNewRelease(){
+//     const response = await window.api.program.isNewRelease()
 
-    if (response === true) {
-        document.getElementById("update-available").style.display = "flex"
-    }
-}
+//     if (response === true) {
+//         document.getElementById("update-available").style.display = "flex"
+//     }
+// }
 
 export async function handleGetVersion(){
     const version = await window.api.program.getVersion()
