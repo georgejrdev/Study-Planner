@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+      - linux-build
 
 jobs:
-  build:
+  windows-build:
     runs-on: windows-latest  
 
     steps:
@@ -49,7 +50,7 @@ jobs:
       - name: Compress dist directory
         shell: pwsh
         run: |
-          $zipPath = "StudyPlanner-$env:VERSION.zip"
+          $zipPath = "StudyPlanner-$env:VERSION-windows.zip"
           if (Test-Path $zipPath) { Remove-Item $zipPath }
           Compress-Archive -Path ./dist/Study-Planner-win32-x64 -DestinationPath $zipPath -Force
 
@@ -58,6 +59,43 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
-          files: StudyPlanner-${{ env.VERSION }}.zip
+          files: StudyPlanner-${{ env.VERSION }}-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
+
+  linux-build:
+    runs-on: ubuntu-latest
+    needs: windows-build 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Extract version from package.json
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Build application
+        run: npm run package-linux
+
+      - name: Compress dist directory
+        run: |
+          zip -r StudyPlanner-$VERSION-linux.zip dist/Study-Planner-linux-x64
+
+      - name: Upload asset to existing release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          files: StudyPlanner-${{ env.VERSION }}-linux.zip
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
